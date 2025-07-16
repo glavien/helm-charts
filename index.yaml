@@ -3,10 +3,10 @@ entries:
   hostendpoint-operator:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-16T19:43:20.147714982Z"
+    created: "2025-07-16T20:08:13.804523465Z"
     description: A Kubernetes operator to automatically manage Calico HostEndpoints
       for cluster nodes.
-    digest: 9f3789811f4fb5d136b406685994efa5194ec4478653deab232ce9596c44306a
+    digest: f83f8594b2b9650fc63172ba66234f797a50bc5d769030ca7ad5fd5e9923b4ca
     keywords:
     - calico
     - networking
@@ -22,4 +22,4 @@ entries:
     urls:
     - https://glavien.github.io/helm-charts/charts/hostendpoint-operator-1.0.0.tgz
     version: 1.0.0
-generated: "2025-07-16T19:43:20.147265213Z"
+generated: "2025-07-16T20:08:13.804045222Z"
