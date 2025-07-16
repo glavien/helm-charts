@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Glavien Helm Charts Repository - Production-ready Kubernetes applications and tools for modern cloud infrastructure.">
+    <meta name="keywords" content="kubernetes, helm, charts, devops, cloud, containers, microservices">
+    <meta name="author" content="Glavien Software">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://glavien.github.io/helm-charts/">
+    <meta property="og:title" content="Glavien Helm Charts Repository">
+    <meta property="og:description" content="Production-ready Kubernetes applications and tools for modern cloud infrastructure.">
+    <meta property="og:image" content="https://glavien.github.io/helm-charts/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://glavien.github.io/helm-charts/">
+    <meta property="twitter:title" content="Glavien Helm Charts Repository">
+    <meta property="twitter:description" content="Production-ready Kubernetes applications and tools for modern cloud infrastructure.">
+    <meta property="twitter:image" content="https://glavien.github.io/helm-charts/og-image.png">
+
+    <title>Glavien Helm Charts Repository</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232563eb'/><text x='50' y='65' text-anchor='middle' fill='white' font-size='40' font-family='Arial, sans-serif' font-weight='bold'>H</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-ship"></i>
+                    <h1>Glavien Helm Charts</h1>
+                </div>
+                <div class="header-description">
+                    <p>Production-ready Kubernetes applications and tools</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="quick-start">
+                <h2><i class="fas fa-rocket"></i> Quick Start</h2>
+                <p>Add our Helm repository to your cluster:</p>
+                <div class="code-block">
+                    <code id="helm-command">helm repo add glavien https://glavien.github.io/helm-charts/</code>
+                    <button class="copy-btn" onclick="copyToClipboard('helm-command')">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <div class="code-block">
+                    <code>helm repo update</code>
+                    <button class="copy-btn" onclick="copyToClipboard(this.previousElementSibling)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </section>
+
+            <section class="charts-section">
+                <h2><i class="fas fa-cubes"></i> Available Charts</h2>
+                <div class="charts-grid" id="charts-grid">
+                    <!-- Charts will be loaded dynamically -->
+                </div>
+            </section>
+
+            <section class="resources">
+                <h2><i class="fas fa-link"></i> Resources</h2>
+                <div class="resources-grid">
+                    <a href="index.yaml" class="resource-card">
+                        <i class="fas fa-file-code"></i>
+                        <h3>Repository Index</h3>
+                        <p>YAML index of all available charts</p>
+                    </a>
+                    <a href="charts/" class="resource-card">
+                        <i class="fas fa-folder"></i>
+                        <h3>Charts Directory</h3>
+                        <p>Browse all chart packages</p>
+                    </a>
+                    <a href="https://github.com/glavien/helm-charts" class="resource-card">
+                        <i class="fab fa-github"></i>
+                        <h3>GitHub Repository</h3>
+                        <p>Source code and issues</p>
+                    </a>
+                    <a href="about.html" class="resource-card">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>About</h3>
+                        <p>Learn more about our charts</p>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Glavien Software. Built with ❤️ for the Kubernetes community.</p>
+            <div class="footer-links">
+                <a href="https://gameback.cloud" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Glavien
+                </a>
+                <a href="https://helm.sh" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Helm
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

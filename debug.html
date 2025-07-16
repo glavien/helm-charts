@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Helm Charts Parser</title>
+</head>
+<body>
+    <h1>Debug Helm Charts Parser</h1>
+    <button onclick="testParser()">Test Parser</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function testParser() {
+            const output = document.getElementById('output');
+            output.innerHTML = 'Loading...';
+            
+            try {
+                const response = await fetch('./index.yaml');
+                const yamlText = await response.text();
+                
+                output.innerHTML = `
+YAML Content (first 1000 chars):
+${yamlText.substring(0, 1000)}
+
+---
+
+Full YAML:
+${yamlText}
+                `;
+            } catch (error) {
+                output.innerHTML = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

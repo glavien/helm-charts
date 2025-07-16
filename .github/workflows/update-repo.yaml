@@ -1,0 +1,114 @@
+name: Update Helm Repository
+
+on:
+  repository_dispatch:
+    types: [new-chart-release]
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: 'Source repository (owner/repo)'
+        required: true
+      tag:
+        description: 'Release tag'
+        required: true
+
+jobs:
+  update:
+    name: Update Chart Index
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Install required tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Set variables
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "repository=${{ github.event.client_payload.repository }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ github.event.client_payload.tag }}" >> $GITHUB_OUTPUT
+            echo "version=${{ github.event.client_payload.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "repository=${{ github.event.inputs.repository }}" >> $GITHUB_OUTPUT
+            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+            echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download release artifact
+        run: |
+          REPO="${{ steps.vars.outputs.repository }}"
+          TAG="${{ steps.vars.outputs.tag }}"
+          VERSION="${{ steps.vars.outputs.version }}"
+          
+          echo "Downloading chart from repository: $REPO, tag: $TAG, version: $VERSION"
+          
+          # Get the release info and find the chart file
+          RELEASE_INFO=$(curl -s "https://api.github.com/repos/$REPO/releases/tags/$TAG")
+          
+          # Find the .tgz file in the release assets
+          CHART_URL=$(echo "$RELEASE_INFO" | jq -r '.assets[] | select(.name | endswith(".tgz")) | .browser_download_url')
+          CHART_NAME=$(echo "$RELEASE_INFO" | jq -r '.assets[] | select(.name | endswith(".tgz")) | .name')
+          
+          if [ "$CHART_URL" = "null" ] || [ -z "$CHART_URL" ]; then
+            echo "Error: No .tgz file found in release $TAG"
+            exit 1
+          fi
+          
+          echo "Found chart: $CHART_NAME"
+          echo "Download URL: $CHART_URL"
+          
+          # Download the chart package
+          curl -L -o "$CHART_NAME" "$CHART_URL"
+          
+          echo "Downloaded chart:"
+          ls -la *.tgz
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Update Helm repository index
+        run: |
+          # Create charts directory if it doesn't exist
+          mkdir -p charts
+          
+          # Move all downloaded charts to charts directory
+          mv *.tgz charts/
+          
+          # Generate/update the index.yaml
+          helm repo index charts --url https://glavien.github.io/helm-charts/charts
+          
+          # Move index.yaml to root for GitHub Pages
+          cp charts/index.yaml ./index.yaml
+          
+          echo "Repository updated:"
+          ls -la
+          echo "Charts directory:"
+          ls -la charts/
+          echo "Index.yaml content:"
+          cat index.yaml
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update chart repository with ${{ steps.vars.outputs.repository }}@${{ steps.vars.outputs.tag }}"
+            git push origin gh-pages
+            echo "Repository index updated successfully"
+          else
+            echo "No changes to commit"
+          fi

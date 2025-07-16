@@ -1,0 +1,17 @@
+name: Test Repository Dispatch Handler
+
+on:
+  repository_dispatch:
+    types: [test-dispatch]
+
+jobs:
+  test-handler:
+    name: Handle Test Dispatch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display payload
+        run: |
+          echo "Received test dispatch event!"
+          echo "Message: ${{ github.event.client_payload.message }}"
+          echo "Sender: ${{ github.event.client_payload.sender }}"
+          echo "Event type: ${{ github.event.action }}"
