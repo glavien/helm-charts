@@ -1,0 +1,36 @@
+name: Update Helm Repository
+
+on:
+  repository_dispatch:
+    types: [new-chart-release]
+  push:
+    branches:
+      - main
+
+jobs:
+  update:
+    name: Update Chart Index
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Get release info from payload
+        run: |
+          echo "Updating for repo: ${{ github.event.client_payload.repository }}"
+          echo "Tag: ${{ github.event.client_payload.tag }}"
+
+      - name: Run chart-releaser to update index
+        uses: helm/chart-releaser-action@v1.6.0
+        with:
+          charts_dir: . 
+          config: .github/cr.yaml
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_OWNER: "Glavien"
+          CR_GIT_REPO: "charts"
