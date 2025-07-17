@@ -2,8 +2,29 @@ apiVersion: v1
 entries:
   hostendpoint-operator:
   - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2025-07-17T11:15:35.390582702Z"
+    description: A Kubernetes operator to automatically manage Calico HostEndpoints
+      for cluster nodes.
+    digest: 3c63fc875905a2ff157d9daf4f413a3bc86574de9c96e30404b3d4de7f9084bf
+    keywords:
+    - calico
+    - networking
+    - security
+    - operator
+    - hostendpoint
+    maintainers:
+    - email: stepa@glavien.io
+      name: Glavien Software
+      url: https://gameback.cloud
+    name: hostendpoint-operator
+    type: application
+    urls:
+    - https://glavien.github.io/helm-charts/charts/hostendpoint-operator-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-16T20:08:13.804523465Z"
+    created: "2025-07-17T11:15:35.390259123Z"
     description: A Kubernetes operator to automatically manage Calico HostEndpoints
       for cluster nodes.
     digest: f83f8594b2b9650fc63172ba66234f797a50bc5d769030ca7ad5fd5e9923b4ca
@@ -22,4 +43,4 @@ entries:
     urls:
     - https://glavien.github.io/helm-charts/charts/hostendpoint-operator-1.0.0.tgz
     version: 1.0.0
-generated: "2025-07-16T20:08:13.804045222Z"
+generated: "2025-07-17T11:15:35.389771104Z"
