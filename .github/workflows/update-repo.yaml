@@ -57,23 +57,26 @@ jobs:
           
           echo "Downloading chart from repository: $REPO, tag: $TAG, version: $VERSION"
           
-          # Get the release info and find the chart file
+          # Get the release info
           RELEASE_INFO=$(curl -s "https://api.github.com/repos/$REPO/releases/tags/$TAG")
           
-          # Find the .tgz file in the release assets
-          CHART_URL=$(echo "$RELEASE_INFO" | jq -r '.assets[] | select(.name | endswith(".tgz")) | .browser_download_url')
-          CHART_NAME=$(echo "$RELEASE_INFO" | jq -r '.assets[] | select(.name | endswith(".tgz")) | .name')
+          # Find the exact chart file for this version
+          EXPECTED_CHART_NAME="hostendpoint-operator-${VERSION}.tgz"
+          
+          CHART_URL=$(echo "$RELEASE_INFO" | jq -r --arg name "$EXPECTED_CHART_NAME" '.assets[] | select(.name == $name) | .browser_download_url')
           
           if [ "$CHART_URL" = "null" ] || [ -z "$CHART_URL" ]; then
-            echo "Error: No .tgz file found in release $TAG"
+            echo "Error: Expected chart file $EXPECTED_CHART_NAME not found in release $TAG"
+            echo "Available assets:"
+            echo "$RELEASE_INFO" | jq -r '.assets[].name'
             exit 1
           fi
           
-          echo "Found chart: $CHART_NAME"
+          echo "Found chart: $EXPECTED_CHART_NAME"
           echo "Download URL: $CHART_URL"
           
           # Download the chart package
-          curl -L -o "$CHART_NAME" "$CHART_URL"
+          curl -L -o "$EXPECTED_CHART_NAME" "$CHART_URL"
           
           echo "Downloaded chart:"
           ls -la *.tgz
