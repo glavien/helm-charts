@@ -3,10 +3,10 @@ entries:
   hostendpoint-operator:
   - apiVersion: v2
     appVersion: 1.0.4
-    created: "2025-07-17T13:45:56.192837894Z"
+    created: "2025-07-17T13:53:35.332038796Z"
     description: A Kubernetes operator to automatically manage Calico HostEndpoints
       for cluster nodes.
-    digest: e497033d1c4a19165fb4ee7c50e533a23bc7aeca3b1b74f1120d354e5de12e6f
+    digest: 8a090b34bdab2444a0e3d099ce8f39e0d3b61f078b96a8fbe4932b837ea8ff21
     keywords:
     - calico
     - networking
@@ -24,7 +24,7 @@ entries:
     version: 1.0.4
   - apiVersion: v2
     appVersion: 1.0.3
-    created: "2025-07-17T13:45:56.192550584Z"
+    created: "2025-07-17T13:53:35.331746125Z"
     description: A Kubernetes operator to automatically manage Calico HostEndpoints
       for cluster nodes.
     digest: 955fd66f2fe0ccf049d4ada75b6db0f2cebbbd05d7a4824691502c977ea7bcf5
@@ -45,7 +45,7 @@ entries:
     version: 1.0.3
   - apiVersion: v2
     appVersion: 1.0.2
-    created: "2025-07-17T13:45:56.192254456Z"
+    created: "2025-07-17T13:53:35.331404572Z"
     description: A Kubernetes operator to automatically manage Calico HostEndpoints
       for cluster nodes.
     digest: 8e95db95785396c288a961d00c3f95723c977ab396792dc85b3621e94244af57
@@ -66,7 +66,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.1
-    created: "2025-07-17T13:45:56.191922331Z"
+    created: "2025-07-17T13:53:35.331124735Z"
     description: A Kubernetes operator to automatically manage Calico HostEndpoints
       for cluster nodes.
     digest: 3c63fc875905a2ff157d9daf4f413a3bc86574de9c96e30404b3d4de7f9084bf
@@ -87,7 +87,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-07-17T13:45:56.191535333Z"
+    created: "2025-07-17T13:53:35.330785226Z"
     description: A Kubernetes operator to automatically manage Calico HostEndpoints
       for cluster nodes.
     digest: f83f8594b2b9650fc63172ba66234f797a50bc5d769030ca7ad5fd5e9923b4ca
@@ -106,4 +106,4 @@ entries:
     urls:
     - https://glavien.github.io/helm-charts/charts/hostendpoint-operator-1.0.0.tgz
     version: 1.0.0
-generated: "2025-07-17T13:45:56.191048206Z"
+generated: "2025-07-17T13:53:35.330345699Z"
