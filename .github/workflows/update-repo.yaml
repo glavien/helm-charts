@@ -60,25 +60,62 @@ jobs:
           # Get the release info
           RELEASE_INFO=$(curl -s "https://api.github.com/repos/$REPO/releases/tags/$TAG")
           
+          # Check if release exists
+          if echo "$RELEASE_INFO" | jq -e '.message == "Not Found"' >/dev/null; then
+            echo "❌ Release $TAG not found in repository $REPO"
+            exit 1
+          fi
+          
           # Find the exact chart file for this version
           EXPECTED_CHART_NAME="hostendpoint-operator-${VERSION}.tgz"
+          
+          echo "Looking for chart file: $EXPECTED_CHART_NAME"
+          echo "Available assets:"
+          echo "$RELEASE_INFO" | jq -r '.assets[].name'
           
           CHART_URL=$(echo "$RELEASE_INFO" | jq -r --arg name "$EXPECTED_CHART_NAME" '.assets[] | select(.name == $name) | .browser_download_url')
           
           if [ "$CHART_URL" = "null" ] || [ -z "$CHART_URL" ]; then
-            echo "Error: Expected chart file $EXPECTED_CHART_NAME not found in release $TAG"
-            echo "Available assets:"
-            echo "$RELEASE_INFO" | jq -r '.assets[].name'
+            echo "❌ Expected chart file $EXPECTED_CHART_NAME not found in release $TAG"
+            
+            # Try to find any chart file as fallback
+            echo "Trying fallback: any .tgz file containing version $VERSION"
+            CHART_URL=$(echo "$RELEASE_INFO" | jq -r --arg version "$VERSION" '.assets[] | select(.name | endswith(".tgz")) | select(.name | contains($version)) | .browser_download_url' | head -1)
+            CHART_NAME=$(echo "$RELEASE_INFO" | jq -r --arg version "$VERSION" '.assets[] | select(.name | endswith(".tgz")) | select(.name | contains($version)) | .name' | head -1)
+            
+            if [ "$CHART_URL" = "null" ] || [ -z "$CHART_URL" ]; then
+              echo "❌ No suitable chart file found"
+              exit 1
+            fi
+            
+            echo "⚠️  Using fallback chart: $CHART_NAME"
+          else
+            CHART_NAME="$EXPECTED_CHART_NAME"
+          fi
+          
+          echo "✅ Found chart: $CHART_NAME"
+          echo "📥 Download URL: $CHART_URL"
+          
+          # Download the chart package
+          if ! curl -L -o "$CHART_NAME" "$CHART_URL"; then
+            echo "❌ Failed to download chart file"
             exit 1
           fi
           
-          echo "Found chart: $EXPECTED_CHART_NAME"
-          echo "Download URL: $CHART_URL"
+          # Verify download
+          if [ ! -f "$CHART_NAME" ]; then
+            echo "❌ Chart file not found after download"
+            exit 1
+          fi
           
-          # Download the chart package
-          curl -L -o "$EXPECTED_CHART_NAME" "$CHART_URL"
+          FILE_SIZE=$(stat -c%s "$CHART_NAME")
+          if [ "$FILE_SIZE" -lt 1000 ]; then
+            echo "❌ Downloaded file is too small ($FILE_SIZE bytes), probably an error page"
+            cat "$CHART_NAME"
+            exit 1
+          fi
           
-          echo "Downloaded chart:"
+          echo "✅ Successfully downloaded chart:"
           ls -la *.tgz
 
       - name: Set up Helm
