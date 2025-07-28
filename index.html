@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,77 +23,860 @@
     <meta property="twitter:image" content="https://glavien.github.io/helm-charts/og-image.png">
 
     <title>Glavien Helm Charts Repository</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="manifest" href="manifest.json">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%232563eb'/><text x='50' y='65' text-anchor='middle' fill='white' font-size='40' font-family='Arial, sans-serif' font-weight='bold'>H</text></svg>">
+    
+    <style>
+        /* Modern CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Root Variables */
+        :root {
+            --brand-bg: #121419;
+            --primary-color: #3b82f6;
+            --primary-light: #60a5fa;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #8b5cf6;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            
+            --bg-primary: #1a1d23;
+            --bg-secondary: #242831;
+            --bg-tertiary: #2d3748;
+            --bg-glass: rgba(255, 255, 255, 0.05);
+            --bg-glass-hover: rgba(255, 255, 255, 0.1);
+            --bg-code: #0f1419;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --text-on-dark: #f8fafc;
+            
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-color-hover: rgba(59, 130, 246, 0.3);
+            --border-radius: 16px;
+            --border-radius-sm: 12px;
+            --border-radius-lg: 24px;
+            
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+            
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--brand-bg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            padding: 6rem 0;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: var(--shadow-glow);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff, var(--primary-light), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .header-description {
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .header-description p {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        section {
+            margin-bottom: 6rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Quick Start Section */
+        .quick-start {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 3rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .command-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .code-block {
+            display: flex;
+            align-items: center;
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            position: relative;
+            font-family: var(--font-mono);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .code-block:hover {
+            border-color: var(--border-color-hover);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .code-block code {
+            color: var(--text-primary);
+            flex: 1;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .chart-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--border-color-hover);
+            background: var(--bg-glass-hover);
+        }
+
+        .chart-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.75rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .chart-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .chart-version {
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chart-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .chart-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .install-btn {
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .install-btn:hover {
+            background: linear-gradient(135deg, #047857, #065f46);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Resources Grid */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .resource-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem 1rem;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.4s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--border-color-hover);
+        }
+
+        .resource-card:hover::before {
+            opacity: 1;
+        }
+
+        .resource-card i {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .resource-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-card p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 6rem;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 1.5rem;
+        }
+
+        .no-charts {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+
+        .no-charts i {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .no-charts h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0.5rem;
+            border-radius: var(--border-radius-sm);
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .install-note {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .install-note i {
+            color: var(--primary-color);
+            margin-right: 0.75rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--success-color), #047857);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1000;
+            animation: slideInUp 0.3s ease, fadeOut 0.3s ease 2.7s;
+            font-weight: 500;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .logo h1 {
+                font-size: 2.5rem;
+            }
+            
+            .logo-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+            
+            .header-description p {
+                font-size: 1.125rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .resources-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .code-block {
+                font-size: 0.875rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .quick-start, .modal-body, .modal-header {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Error state */
+        .error {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+
+        .error i {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: var(--danger-color);
+        }
+
+        .error h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
             <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-ship"></i>
+                    <div class="logo-icon">
+                        <i class="fas fa-ship"></i>
+                    </div>
                     <h1>Glavien Helm Charts</h1>
                 </div>
                 <div class="header-description">
-                    <p>Production-ready Kubernetes applications and tools</p>
+                    <p>Production-ready Kubernetes applications and tools for modern cloud infrastructure</p>
                 </div>
             </div>
         </header>
 
         <main class="main-content">
             <section class="quick-start">
-                <h2><i class="fas fa-rocket"></i> Quick Start</h2>
-                <p>Add our Helm repository to your cluster:</p>
-                <div class="code-block">
-                    <code id="helm-command">helm repo add glavien https://glavien.github.io/helm-charts/</code>
-                    <button class="copy-btn" onclick="copyToClipboard('helm-command')">
-                        <i class="fas fa-copy"></i>
-                    </button>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-rocket"></i>
+                        Quick Start
+                    </h2>
+                    <p class="section-subtitle">Get started with Glavien Helm charts in seconds</p>
                 </div>
-                <div class="code-block">
-                    <code>helm repo update</code>
-                    <button class="copy-btn" onclick="copyToClipboard(this.previousElementSibling)">
-                        <i class="fas fa-copy"></i>
-                    </button>
+                
+                <div class="command-grid">
+                    <div class="code-block">
+                        <code id="helm-command">helm repo add glavien https://glavien.github.io/helm-charts/</code>
+                        <button class="copy-btn" onclick="copyToClipboard('helm-command')">
+                            <i class="fas fa-copy"></i>
+                            Copy
+                        </button>
+                    </div>
+                    <div class="code-block">
+                        <code id="helm-update">helm repo update</code>
+                        <button class="copy-btn" onclick="copyToClipboard('helm-update')">
+                            <i class="fas fa-copy"></i>
+                            Copy
+                        </button>
+                    </div>
                 </div>
             </section>
 
             <section class="charts-section">
-                <h2><i class="fas fa-cubes"></i> Available Charts</h2>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-cubes"></i>
+                        Available Charts
+                    </h2>
+                    <p class="section-subtitle">Discover our collection of production-ready Kubernetes applications</p>
+                </div>
                 <div class="charts-grid" id="charts-grid">
                     <!-- Charts will be loaded dynamically -->
                 </div>
             </section>
 
             <section class="resources">
-                <h2><i class="fas fa-link"></i> Resources</h2>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-link"></i>
+                        Resources
+                    </h2>
+                    <p class="section-subtitle">Everything you need to get the most out of our charts</p>
+                </div>
                 <div class="resources-grid">
                     <a href="index.yaml" class="resource-card">
                         <i class="fas fa-file-code"></i>
                         <h3>Repository Index</h3>
-                        <p>YAML index of all available charts</p>
+                        <p>YAML index of all available charts with metadata and versions</p>
                     </a>
                     <a href="charts/" class="resource-card">
-                        <i class="fas fa-folder"></i>
+                        <i class="fas fa-folder-open"></i>
                         <h3>Charts Directory</h3>
-                        <p>Browse all chart packages</p>
+                        <p>Browse and download individual chart packages directly</p>
                     </a>
-                    <a href="https://github.com/glavien/helm-charts" class="resource-card">
+                    <a href="https://github.com/glavien" class="resource-card">
                         <i class="fab fa-github"></i>
                         <h3>GitHub Repository</h3>
-                        <p>Source code and issues</p>
+                        <p>Source code, issues, and contributions welcome</p>
                     </a>
                     <a href="about.html" class="resource-card">
                         <i class="fas fa-info-circle"></i>
                         <h3>About</h3>
-                        <p>Learn more about our charts</p>
+                        <p>Learn more about our mission and chart philosophy</p>
                     </a>
                 </div>
             </section>
@@ -102,15 +886,351 @@
             <p>&copy; 2025 Glavien Software. Built with ❤️ for the Kubernetes community.</p>
             <div class="footer-links">
                 <a href="https://gameback.cloud" target="_blank">
-                    <i class="fas fa-external-link-alt"></i> Glavien
+                    <i class="fas fa-external-link-alt"></i>
+                    Glavien
                 </a>
                 <a href="https://helm.sh" target="_blank">
-                    <i class="fas fa-external-link-alt"></i> Helm
+                    <i class="fas fa-external-link-alt"></i>
+                    Helm
                 </a>
             </div>
         </footer>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        // Glavien Helm Charts Repository - Interactive Features
+        class HelmChartsRepository {
+            constructor() {
+                this.chartsContainer = document.getElementById('charts-grid');
+                this.init();
+            }
+
+            init() {
+                this.loadCharts();
+                this.setupCopyButtons();
+                this.addAnimations();
+            }
+
+            async loadCharts() {
+                try {
+                    this.showLoading();
+                    console.log('Loading charts from index.yaml...');
+                    const response = await fetch('./index.yaml');
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const yamlText = await response.text();
+                    console.log('YAML loaded, length:', yamlText.length);
+                    
+                    const charts = this.parseHelmIndex(yamlText);
+                    console.log('Parsed charts:', charts);
+                    
+                    if (charts.length === 0) {
+                        console.log('No charts found, trying fallback parser...');
+                        const fallbackCharts = this.parseHelmIndexFallback(yamlText);
+                        console.log('Fallback parsed charts:', fallbackCharts);
+                        this.renderCharts(fallbackCharts);
+                    } else {
+                        this.renderCharts(charts);
+                    }
+                } catch (error) {
+                    console.error('Error loading charts:', error);
+                    this.showError();
+                }
+            }
+
+            parseHelmIndex(yamlText) {
+                const charts = [];
+                const lines = yamlText.split('\n');
+                let currentChart = null;
+                let currentEntry = null;
+                let inEntries = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const trimmedLine = line.trim();
+
+                    if (!trimmedLine || trimmedLine.startsWith('#')) continue;
+
+                    if (trimmedLine === 'entries:') {
+                        inEntries = true;
+                        continue;
+                    }
+
+                    if (!inEntries) continue;
+
+                    if (line.match(/^  [a-zA-Z][a-zA-Z0-9-]*:$/)) {
+                        const chartName = line.replace(/^\s+/, '').replace(':', '');
+                        currentChart = {
+                            name: chartName,
+                            entries: []
+                        };
+                        charts.push(currentChart);
+                        continue;
+                    }
+
+                    if (line.startsWith('  - ') && currentChart) {
+                        currentEntry = {};
+                        currentChart.entries.push(currentEntry);
+                        continue;
+                    }
+
+                    if (currentEntry && line.match(/^    \w+:/)) {
+                        const [key, ...valueParts] = line.trim().split(':');
+                        let value = valueParts.join(':').trim();
+                        
+                        if (value.startsWith('"') && value.endsWith('"')) {
+                            value = value.slice(1, -1);
+                        }
+                        
+                        currentEntry[key] = value;
+                    }
+                }
+
+                const processedCharts = [];
+                charts.forEach(chart => {
+                    if (chart.entries && chart.entries.length > 0) {
+                        const latestEntry = chart.entries[0];
+                        processedCharts.push({
+                            name: chart.name,
+                            version: latestEntry.version || 'unknown',
+                            appVersion: latestEntry.appVersion || latestEntry.version || 'unknown',
+                            description: latestEntry.description || 'No description available',
+                            created: latestEntry.created || new Date().toISOString()
+                        });
+                    }
+                });
+
+                return processedCharts;
+            }
+
+            parseHelmIndexFallback(yamlText) {
+                const charts = [];
+                const chartNameMatches = yamlText.match(/^  ([a-zA-Z][a-zA-Z0-9-]+):$/gm);
+                
+                if (chartNameMatches) {
+                    chartNameMatches.forEach(match => {
+                        const chartName = match.replace(/^\s+/, '').replace(':', '');
+                        const chartSection = yamlText.split(match)[1];
+                        if (chartSection) {
+                            const versionMatch = chartSection.match(/version:\s*"?([^"\n]+)"?/);
+                            const appVersionMatch = chartSection.match(/appVersion:\s*"?([^"\n]+)"?/);
+                            const descriptionMatch = chartSection.match(/description:\s*"?([^"\n]+)"?/);
+                            const createdMatch = chartSection.match(/created:\s*"?([^"\n]+)"?/);
+                            
+                            charts.push({
+                                name: chartName,
+                                version: versionMatch ? versionMatch[1] : 'unknown',
+                                appVersion: appVersionMatch ? appVersionMatch[1] : 'unknown',
+                                description: descriptionMatch ? descriptionMatch[1] : 'No description available',
+                                created: createdMatch ? createdMatch[1] : new Date().toISOString()
+                            });
+                        }
+                    });
+                }
+                
+                return charts;
+            }
+
+            renderCharts(charts) {
+                if (charts.length === 0) {
+                    this.chartsContainer.innerHTML = `
+                        <div class="no-charts">
+                            <i class="fas fa-cube"></i>
+                            <h3>No charts available yet</h3>
+                            <p>Charts will appear here once they are published to the repository.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                this.chartsContainer.innerHTML = charts.map(chart => this.createChartCard(chart)).join('');
+            }
+
+            createChartCard(chart) {
+                const createdDate = chart.created ? new Date(chart.created).toLocaleDateString() : 'Unknown';
+                const description = chart.description || 'No description available';
+                
+                return `
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div class="chart-icon">
+                                ${this.getChartIcon(chart.name)}
+                            </div>
+                            <div class="chart-info">
+                                <h3>${chart.name}</h3>
+                                <span class="chart-version">v${chart.version}</span>
+                            </div>
+                        </div>
+                        <p class="chart-description">${description}</p>
+                        <div class="chart-meta">
+                            <span><i class="fas fa-tag"></i> App: ${chart.appVersion || chart.version}</span>
+                            <span><i class="fas fa-calendar"></i> ${createdDate}</span>
+                        </div>
+                        <div class="chart-actions">
+                            <button class="install-btn" onclick="app.showInstallCommand('${chart.name}')">
+                                <i class="fas fa-download"></i> Install Chart
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getChartIcon(chartName) {
+                const iconMap = {
+                    'hostendpoint-operator': '<i class="fas fa-network-wired"></i>',
+                    'gameback': '<i class="fas fa-gamepad"></i>',
+                    'database': '<i class="fas fa-database"></i>',
+                    'monitoring': '<i class="fas fa-chart-line"></i>',
+                    'default': '<i class="fas fa-cube"></i>'
+                };
+                
+                return iconMap[chartName] || iconMap['default'];
+            }
+
+            showInstallCommand(chartName) {
+                const command = `helm install my-${chartName} glavien/${chartName}`;
+                
+                this.showModal(
+                    `Install ${chartName}`,
+                    `
+                        <p>Run these commands to install the chart:</p>
+                        <div class="code-block">
+                            <code id="install-command-1">helm repo add glavien https://glavien.github.io/helm-charts/</code>
+                            <button class="copy-btn" onclick="app.copyToClipboard('install-command-1')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="code-block">
+                            <code id="install-command-2">${command}</code>
+                            <button class="copy-btn" onclick="app.copyToClipboard('install-command-2')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="install-note">
+                            <i class="fas fa-info-circle"></i>
+                            Make sure you have Helm 3.0+ installed and your kubectl is configured to connect to your Kubernetes cluster.
+                        </div>
+                    `
+                );
+            }
+
+            showModal(title, content) {
+                const existingModal = document.querySelector('.modal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-backdrop" onclick="this.parentElement.remove()"></div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>${title}</h3>
+                            <button class="modal-close" onclick="this.closest('.modal').remove()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ${content}
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+            }
+
+            showLoading() {
+                this.chartsContainer.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <span>Loading charts...</span>
+                    </div>
+                `;
+            }
+
+            showError() {
+                this.chartsContainer.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Error loading charts</h3>
+                        <p>Please try refreshing the page or check back later.</p>
+                    </div>
+                `;
+            }
+
+            setupCopyButtons() {
+                window.copyToClipboard = (elementId) => {
+                    const element = document.getElementById(elementId);
+                    if (!element) return;
+                    
+                    const text = element.textContent;
+                    
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(text).then(() => {
+                            this.showCopySuccess();
+                        });
+                    } else {
+                        const textArea = document.createElement('textarea');
+                        textArea.value = text;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        this.showCopySuccess();
+                    }
+                };
+            }
+
+            showCopySuccess() {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerHTML = `
+                    <i class="fas fa-check"></i>
+                    Copied to clipboard!
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            }
+
+            addAnimations() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.animation = 'fadeIn 0.8s ease-out';
+                        }
+                    });
+                });
+
+                document.querySelectorAll('section').forEach(section => {
+                    observer.observe(section);
+                });
+            }
+
+            copyToClipboard(elementId) {
+                window.copyToClipboard(elementId);
+            }
+        }
+
+        // Initialize the application
+        let app;
+        document.addEventListener('DOMContentLoaded', () => {
+            app = new HelmChartsRepository();
+        });
+
+        // Global copy function for templates
+        window.copyToClipboard = function(elementId) {
+            if (app) {
+                app.copyToClipboard(elementId);
+            }
+        };
+    </script>
 </body>
 </html>
