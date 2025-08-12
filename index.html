@@ -858,7 +858,7 @@
                     <p class="section-subtitle">Everything you need to get the most out of our charts</p>
                 </div>
                 <div class="resources-grid">
-                    <a href="index.yaml" class="resource-card">
+                    <a href="charts/index.yaml" class="resource-card">
                         <i class="fas fa-file-code"></i>
                         <h3>Repository Index</h3>
                         <p>YAML index of all available charts with metadata and versions</p>
@@ -915,7 +915,7 @@
                 try {
                     this.showLoading();
                     console.log('Loading charts from index.yaml...');
-                    const response = await fetch('./index.yaml');
+                    const response = await fetch('./charts/index.yaml');
                     
                     if (!response.ok) {
                         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
